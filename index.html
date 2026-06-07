@@ -2,142 +2,226 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智慧工厂安全监测控制平台 · XA-202606</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>智慧工厂安全监测控制平台 XA-202606</title>
 <style>
-:root{--bg:#040a12;--surface:#071524;--panel:#0a1e32;--border:#0d4a7a;--accent:#00c8ff;--accent2:#00ff9f;--warn:#ffb300;--danger:#ff3d3d;--text:#c8e4f8;--muted:#4a7090;--grid-line:rgba(0,200,255,0.06)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;font-size:13px;min-height:100vh;overflow-x:hidden;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:40px 40px}
-header{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:linear-gradient(90deg,#020c18 0%,#061726 60%,#020c18 100%);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 0 40px rgba(0,200,255,0.08)}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{width:36px;height:36px;border:2px solid var(--accent);display:grid;place-items:center;font-size:18px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:rgba(0,200,255,0.1);color:var(--accent);animation:pulse-border 3s infinite}
-@keyframes pulse-border{0%,100%{box-shadow:0 0 0 0 rgba(0,200,255,0.4)}50%{box-shadow:0 0 0 6px rgba(0,200,255,0)}}
-.logo-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;color:var(--accent);text-shadow:0 0 20px rgba(0,200,255,0.6)}
-.logo-sub{font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:2px}
-.header-center{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:16px;letter-spacing:4px;color:#fff;text-shadow:0 0 30px rgba(0,200,255,0.4)}
-.header-right{display:flex;align-items:center;gap:20px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--muted)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);animation:blink 1.4s infinite;display:inline-block;margin-right:6px}
+body{background:#040a12;color:#c8e4f8;font-family:'Microsoft YaHei','SimHei',sans-serif;font-size:13px;min-height:100vh;background-image:linear-gradient(rgba(0,200,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(0,200,255,0.06) 1px,transparent 1px);background-size:40px 40px}
+header{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;background:#020c18;border-bottom:1px solid #0d4a7a;position:sticky;top:0;z-index:100}
+.logo-text{font-weight:700;font-size:14px;letter-spacing:2px;color:#00c8ff}
+.logo-sub{font-size:10px;color:#4a7090;margin-top:2px}
+.header-center{font-size:15px;letter-spacing:3px;color:#fff}
+.header-right{font-size:12px;color:#4a7090;display:flex;align-items:center;gap:16px}
+.dot{width:8px;height:8px;border-radius:50%;background:#00ff9f;display:inline-block;margin-right:5px;animation:blink 1.4s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-#clock{color:var(--accent);font-size:14px}
-.container{padding:20px 24px 28px}
-.overview-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
-.ov-card{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:12px 16px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .3s}
-.ov-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
-.ov-card:hover{border-color:var(--accent)}
-.ov-icon{font-size:28px;line-height:1}
-.ov-label{font-size:11px;color:var(--muted);letter-spacing:1px}
-.ov-value{font-family:'Orbitron',sans-serif;font-size:18px;color:#fff}
-.ov-status{font-size:11px;margin-top:2px}
-.ok{color:var(--accent2)}.warn{color:var(--warn)}.danger{color:var(--danger)}
-.panels{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto;gap:16px}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:4px;overflow:hidden;position:relative}
-.panel::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(0,200,255,0.03) 0%,transparent 60%)}
-.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2)}
-.panel-title{display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--accent)}
-.panel-badge{font-family:'Share Tech Mono',monospace;font-size:10px;padding:2px 8px;border-radius:2px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.3);color:var(--accent)}
-.panel-body{padding:16px}
-.temp-hum-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.gauge-wrap{text-align:center}
-.gauge-label{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px}
-.gauge-svg{width:120px;height:70px;overflow:visible;display:block;margin:0 auto}
-.gauge-val{font-family:'Orbitron',sans-serif;font-size:22px;color:#fff;margin-top:4px}
-.gauge-val span{font-size:12px;color:var(--muted)}
-.ir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.ir-zone{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:8px;text-align:center;transition:all .4s;cursor:default}
-.ir-zone.triggered{border-color:var(--danger);background:rgba(255,61,61,0.08);box-shadow:0 0 12px rgba(255,61,61,0.2)}
-.ir-zone-name{font-size:10px;color:var(--muted);margin-bottom:4px}
-.ir-zone-status{font-size:20px}
-.ir-zone-val{font-family:'Share Tech Mono',monospace;font-size:11px;margin-top:2px}
-.ir-log{background:var(--surface);border-radius:3px;padding:8px;max-height:80px;overflow-y:auto}
-.ir-log-entry{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);padding:1px 0}
-.ir-log-entry.new{color:var(--warn)}
-.gas-bars{display:flex;flex-direction:column;gap:10px}
-.gas-row{display:flex;align-items:center;gap:10px}
-.gas-name{font-size:11px;color:var(--muted);width:60px;flex-shrink:0}
-.gas-bar-bg{flex:1;height:8px;background:var(--surface);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.05)}
-.gas-bar-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1);position:relative}
-.gas-bar-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;left:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2));animation:shimmer 2s infinite}
-@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.gas-ppm{font-family:'Share Tech Mono',monospace;font-size:11px;width:60px;text-align:right;flex-shrink:0}
-.gas-alert{font-size:10px;margin-top:4px;padding:4px 8px;border-radius:2px}
-.gas-alert.safe{background:rgba(0,255,159,0.08);color:var(--accent2);border:1px solid rgba(0,255,159,0.2)}
-.gas-alert.alarm{background:rgba(255,61,61,0.12);color:var(--danger);border:1px solid rgba(255,61,61,0.3);animation:flash-border 1s infinite}
-@keyframes flash-border{0%,100%{border-color:rgba(255,61,61,.3)}50%{border-color:rgba(255,61,61,.9)}}
-#agv-canvas{width:100%;height:220px;display:block;border-radius:3px;background:#020d18;border:1px solid rgba(0,200,255,0.1)}
-.agv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.agv-stat{text-align:center}
-.agv-stat-val{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff}
-.agv-stat-label{font-size:10px;color:var(--muted);margin-top:2px}
-.count-big{font-family:'Orbitron',sans-serif;font-size:56px;font-weight:900;color:#fff;text-align:center;line-height:1;text-shadow:0 0 40px rgba(0,200,255,0.5);margin:8p<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>智慧工厂安全监测控制平台 · XA-202606</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#040a12;--surface:#071524;--panel:#0a1e32;--border:#0d4a7a;--accent:#00c8ff;--accent2:#00ff9f;--warn:#ffb300;--danger:#ff3d3d;--text:#c8e4f8;--muted:#4a7090;--grid-line:rgba(0,200,255,0.06)}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Noto Sans SC',sans-serif;font-size:13px;min-height:100vh;overflow-x:hidden;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:40px 40px}
-header{display:flex;align-items:center;justify-content:space-between;padding:0 28px;height:60px;background:linear-gradient(90deg,#020c18 0%,#061726 60%,#020c18 100%);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:0 0 40px rgba(0,200,255,0.08)}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-icon{width:36px;height:36px;border:2px solid var(--accent);display:grid;place-items:center;font-size:18px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:rgba(0,200,255,0.1);color:var(--accent);animation:pulse-border 3s infinite}
-@keyframes pulse-border{0%,100%{box-shadow:0 0 0 0 rgba(0,200,255,0.4)}50%{box-shadow:0 0 0 6px rgba(0,200,255,0)}}
-.logo-text{font-family:'Orbitron',sans-serif;font-weight:700;font-size:15px;letter-spacing:2px;color:var(--accent);text-shadow:0 0 20px rgba(0,200,255,0.6)}
-.logo-sub{font-size:10px;color:var(--muted);letter-spacing:1px;margin-top:2px}
-.header-center{font-family:'Noto Sans SC',sans-serif;font-weight:500;font-size:16px;letter-spacing:4px;color:#fff;text-shadow:0 0 30px rgba(0,200,255,0.4)}
-.header-right{display:flex;align-items:center;gap:20px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--muted)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:var(--accent2);box-shadow:0 0 8px var(--accent2);animation:blink 1.4s infinite;display:inline-block;margin-right:6px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-#clock{color:var(--accent);font-size:14px}
-.container{padding:20px 24px 28px}
-.overview-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
-.ov-card{background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:12px 16px;display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;cursor:pointer;transition:border-color .3s}
-.ov-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent)}
-.ov-card:hover{border-color:var(--accent)}
-.ov-icon{font-size:28px;line-height:1}
-.ov-label{font-size:11px;color:var(--muted);letter-spacing:1px}
-.ov-value{font-family:'Orbitron',sans-serif;font-size:18px;color:#fff}
-.ov-status{font-size:11px;margin-top:2px}
-.ok{color:var(--accent2)}.warn{color:var(--warn)}.danger{color:var(--danger)}
-.panels{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:auto auto;gap:16px}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:4px;overflow:hidden;position:relative}
-.panel::after{content:'';position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,rgba(0,200,255,0.03) 0%,transparent 60%)}
-.panel-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(0,0,0,0.2)}
-.panel-title{display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--accent)}
-.panel-badge{font-family:'Share Tech Mono',monospace;font-size:10px;padding:2px 8px;border-radius:2px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.3);color:var(--accent)}
-.panel-body{padding:16px}
-.temp-hum-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.gauge-wrap{text-align:center}
-.gauge-label{font-size:11px;color:var(--muted);letter-spacing:1px;margin-bottom:8px}
-.gauge-svg{width:120px;height:70px;overflow:visible;display:block;margin:0 auto}
-.gauge-val{font-family:'Orbitron',sans-serif;font-size:22px;color:#fff;margin-top:4px}
-.gauge-val span{font-size:12px;color:var(--muted)}
-.ir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
-.ir-zone{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:8px;text-align:center;transition:all .4s;cursor:default}
-.ir-zone.triggered{border-color:var(--danger);background:rgba(255,61,61,0.08);box-shadow:0 0 12px rgba(255,61,61,0.2)}
-.ir-zone-name{font-size:10px;color:var(--muted);margin-bottom:4px}
-.ir-zone-status{font-size:20px}
-.ir-zone-val{font-family:'Share Tech Mono',monospace;font-size:11px;margin-top:2px}
-.ir-log{background:var(--surface);border-radius:3px;padding:8px;max-height:80px;overflow-y:auto}
-.ir-log-entry{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted);padding:1px 0}
-.ir-log-entry.new{color:var(--warn)}
-.gas-bars{display:flex;flex-direction:column;gap:10px}
-.gas-row{display:flex;align-items:center;gap:10px}
-.gas-name{font-size:11px;color:var(--muted);width:60px;flex-shrink:0}
-.gas-bar-bg{flex:1;height:8px;background:var(--surface);border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.05)}
-.gas-bar-fill{height:100%;border-radius:4px;transition:width .8s cubic-bezier(.4,0,.2,1);position:relative}
-.gas-bar-fill::after{content:'';position:absolute;top:0;right:0;bottom:0;left:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2));animation:shimmer 2s infinite}
-@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-.gas-ppm{font-family:'Share Tech Mono',monospace;font-size:11px;width:60px;text-align:right;flex-shrink:0}
-.gas-alert{font-size:10px;margin-top:4px;padding:4px 8px;border-radius:2px}
-.gas-alert.safe{background:rgba(0,255,159,0.08);color:var(--accent2);border:1px solid rgba(0,255,159,0.2)}
-.gas-alert.alarm{background:rgba(255,61,61,0.12);color:var(--danger);border:1px solid rgba(255,61,61,0.3);animation:flash-border 1s infinite}
-@keyframes flash-border{0%,100%{border-color:rgba(255,61,61,.3)}50%{border-color:rgba(255,61,61,.9)}}
-#agv-canvas{width:100%;height:220px;display:block;border-radius:3px;background:#020d18;border:1px solid rgba(0,200,255,0.1)}
-.agv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
-.agv-stat{text-align:center}
-.agv-stat-val{font-family:'Orbitron',sans-serif;font-size:16px;color:#fff}
-.agv-stat-label{font-size:10px;color:var(--muted);margin-top:2px}
-.count-big{font-family:'Orbitron',sans-serif;font-size:56px;font-weight:900;color:#fff;text-align:center;line-height:1;text-shadow:0 0 40px rgba(0,200,255,0.5);margin:8p
+#clock{color:#00c8ff}
+.container{padding:16px}
+.ov-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.ov-card{background:#0a1e32;border:1px solid #0d4a7a;border-radius:4px;padding:10px 12px;display:flex;align-items:center;gap:10px;border-top:2px solid #00c8ff}
+.ov-icon{font-size:24px}
+.ov-label{font-size:10px;color:#4a7090}
+.ov-val{font-size:16px;color:#fff;font-weight:700}
+.ov-st{font-size:10px;margin-top:1px}
+.ok{color:#00ff9f}.warn{color:#ffb300}.danger{color:#ff3d3d}
+.ticker{display:flex;align-items:center;height:32px;background:rgba(255,179,0,0.05);border:1px solid rgba(255,179,0,0.2);border-radius:4px;padding:0 12px;margin-bottom:14px;overflow:hidden}
+.ticker-tag{font-size:10px;color:#ffb300;letter-spacing:2px;white-space:nowrap;margin-right:16px;flex-shrink:0}
+.ticker-wrap{overflow:hidden;flex:1}
+.ticker-inner{display:flex;gap:50px;white-space:nowrap;font-size:11px;color:#4a7090;animation:tick 25s linear infinite}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.panels{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.panel{background:#0a1e32;border:1px solid #0d4a7a;border-radius:4px;overflow:hidden}
+.ph{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid #0d4a7a;background:rgba(0,0,0,0.2)}
+.pt{font-size:11px;letter-spacing:2px;color:#00c8ff}
+.pb{font-size:10px;padding:2px 7px;border-radius:2px;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.3);color:#00c8ff}
+.pb.alarm{color:#ff3d3d;border-color:#ff3d3d;background:rgba(255,61,61,0.1)}
+.pb.warn{color:#ffb300;border-color:#ffb300;background:rgba(255,179,0,0.1)}
+.pbd{padding:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gc{text-align:center}
+.gl{font-size:10px;color:#4a7090;margin-bottom:6px}
+.gv{font-size:20px;color:#fff;font-weight:700;margin-top:4px}
+.gv span{font-size:11px;color:#4a7090}
+.ir-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:10px}
+.irz{background:#071524;border:1px solid #0d4a7a;border-radius:3px;padding:7px;text-align:center;transition:all .3s}
+.irz.on{border-color:#ff3d3d;background:rgba(255,61,61,0.08);box-shadow:0 0 10px rgba(255,61,61,0.2)}
+.irz-n{font-size:9px;color:#4a7090;margin-bottom:3px}
+.irz-s{font-size:18px}
+.irz-v{font-size:10px;margin-top:2px}
+.ir-log{background:#071524;border-radius:3px;padding:7px;max-height:75px;overflow-y:auto}
+.ir-entry{font-size:10px;color:#4a7090;padding:1px 0}
+.ir-entry.new{color:#ffb300}
+.gas-list{display:flex;flex-direction:column;gap:9px}
+.gas-row{display:flex;align-items:center;gap:9px}
+.gas-n{font-size:11px;color:#4a7090;width:55px;flex-shrink:0}
+.gas-bg{flex:1;height:8px;background:#071524;border-radius:4px;overflow:hidden}
+.gas-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.gas-v{font-size:11px;width:55px;text-align:right;flex-shrink:0}
+.gas-alert{font-size:10px;margin-top:8px;padding:4px 8px;border-radius:2px}
+.gas-alert.safe{background:rgba(0,255,159,0.08);color:#00ff9f;border:1px solid rgba(0,255,159,0.2)}
+.gas-alert.alarm{background:rgba(255,61,61,0.1);color:#ff3d3d;border:1px solid rgba(255,61,61,0.3);animation:fb 1s infinite}
+@keyframes fb{0%,100%{border-color:rgba(255,61,61,.3)}50%{border-color:rgba(255,61,61,.9)}}
+.span2{grid-column:span 2}
+#agvc{width:100%;height:200px;display:block;background:#020d18;border:1px solid rgba(0,200,255,0.1);border-radius:3px}
+.agv-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.agv-st{text-align:center}
+.agv-sv{font-size:15px;color:#fff;font-weight:700}
+.agv-sl{font-size:10px;color:#4a7090;margin-top:2px}
+.cnt-big{font-size:52px;font-weight:900;color:#fff;text-align:center;line-height:1;text-shadow:0 0 30px rgba(0,200,255,0.5);margin:6px 0}
+.cnt-sub{text-align:center;font-size:11px;color:#4a7090}
+.cnt-bars{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;height:55px;align-items:end;margin-top:12px}
+.cnt-col{display:flex;flex-direction:column;align-items:center;gap:3px;height:100%}
+.cnt-bg{flex:1;width:100%;background:#071524;border-radius:3px 3px 0 0;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;border:1px solid #0d4a7a}
+.cnt-fill{width:100%;background:#00c8ff;border-radius:3px 3px 0 0;transition:height .6s}
+.cnt-lbl{font-size:9px;color:#4a7090}
+.cnt-acts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+.btn{padding:7px 0;border:1px solid #00c8ff;background:rgba(0,200,255,0.08);color:#00c8ff;border-radius:3px;cursor:pointer;font-size:12px;font-family:inherit}
+.btn:hover{background:rgba(0,200,255,0.18)}
+.btn.d{border-color:#ff3d3d;color:#ff3d3d;background:rgba(255,61,61,0.05)}
+.cnt-info{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;text-align:center}
+.cnt-iv{font-size:14px;font-weight:700}
+.cnt-il{font-size:10px;color:#4a7090}
+</style>
+</head>
+  <body>
+<header>
+<div><div class="logo-text">⬡ SAFEGUARD OS</div><div class="logo-sub">基于国产操作系统 · 智慧工厂安全平台</div></div>
+<div class="header-center">智慧工厂安全监测控制平台</div>
+<div class="header-right"><span><span class="dot"></span>系统在线</span><span>XA-202606</span><span id="clock">--:--:--</span></div>
+</header>
+<div class="container">
+<div class="ov-bar">
+<div class="ov-card"><div class="ov-icon">🌡️</div><div><div class="ov-label">温湿度</div><div class="ov-val" id="ov1">--</div><div class="ov-st ok" id="ov1s">正常</div></div></div>
+<div class="ov-card"><div class="ov-icon">👁️</div><div><div class="ov-label">红外感应</div><div class="ov-val" id="ov2">0</div><div class="ov-st ok" id="ov2s">无触发</div></div></div>
+<div class="ov-card"><div class="ov-icon">⚠️</div><div><div class="ov-label">危气监测</div><div class="ov-val" id="ov3">安全</div><div class="ov-st ok" id="ov3s">浓度正常</div></div></div>
+<div class="ov-card"><div class="ov-icon">🤖</div><div><div class="ov-label">AGV状态</div><div class="ov-val" id="ov4">运行</div><div class="ov-st ok" id="ov4s">路径清晰</div></div></div>
+<div class="ov-card"><div class="ov-icon">📦</div><div><div class="ov-label">货物计数</div><div class="ov-val" id="ov5">0</div><div class="ov-st ok">今日入库</div></div></div>
+</div>
+<div class="ticker"><div class="ticker-tag">▶ 系统日志</div><div class="ticker-wrap"><div class="ticker-inner"><span>系统启动完成</span><span>传感器全部在线</span><span>AGV路径规划就绪</span><span>危气基线校准完成</span><span>货物计数模块就绪</span><span>系统启动完成</span><span>传感器全部在线</span><span>AGV路径规划就绪</span><span>危气基线校准完成</span><span>货物计数模块就绪</span></div></div></div>
+<div class="panels">
+<div class="panel">
+<div class="ph"><div class="pt">🌡️ 温湿度监测</div><div class="pb" id="thb">NORMAL</div></div>
+<div class="pbd">
+<div class="g2">
+<div class="gc"><div class="gl">温度 TEMP</div><canvas id="tg" width="110" height="65"></canvas><div class="gv" id="tv">--<span>°C</span></div></div>
+<div class="gc"><div class="gl">湿度 RH</div><canvas id="hg" width="110" height="65"></canvas><div class="gv" id="hv">--<span>%</span></div></div>
+</div>
+<canvas id="spk" width="260" height="50" style="width:100%;height:50px;margin-top:12px"></canvas>
+<div style="font-size:10px;color:#4a7090;margin-top:5px;display:flex;justify-content:space-between"><span>阈值：温度&gt;35°C / 湿度&gt;85%</span><span id="tht">--</span></div>
+</div></div>
+<div class="panel">
+<div class="ph"><div class="pt">👁️ 红外感应</div><div class="pb" id="irb">STANDBY</div></div>
+<div class="pbd"><div class="ir-grid" id="irg"></div><div class="ir-log" id="irl"><div class="ir-entry">— 等待感应事件 —</div></div></div>
+</div>
+<div class="panel">
+<div class="ph"><div class="pt">⚠️ 危险气体</div><div class="pb" id="gsb">SAFE</div></div>
+<div class="pbd"><div class="gas-list" id="gsl"></div><div class="gas-alert safe" id="gsa">✓ 所有气体浓度安全</div></div>
+</div>
+<div class="panel span2">
+<div class="ph"><div class="pt">🤖 AGV 自动导引避障</div><div class="pb" id="agvb">RUNNING</div></div>
+<div class="pbd">
+<canvas id="agvc"></canvas>
+<div class="agv-stats"><div class="agv-st"><div class="agv-sv">1.2</div><div class="agv-sl">速度 m/s</div></div><div class="agv-st"><div class="agv-sv" id="agvd">--</div><div class="agv-sl">避障距离 cm</div></div><div class="agv-st"><div class="agv-sv" id="agvt">0</div><div class="agv-sl">今日运次</div></div></div>
+</div></div>
+<div class="panel">
+<div class="ph"><div class="pt">📦 货物计数</div><div class="pb">LIVE</div></div>
+<div class="pbd">
+<div class="cnt-big" id="cntn">0</div>
+<div class="cnt-sub">今日入库总数（件）</div>
+<div class="cnt-bars" id="cntb"></div>
+<div style="display:flex;justify-content:space-around;font-size:9px;color:#4a7090;margin-top:3px" id="cnth"></div>
+<div class="cnt-acts"><button class="btn" onclick="addC()">＋ 手动录入</button><button class="btn d" onclick="resetC()">↺ 重置</button></div>
+<div class="cnt-info"><div><div class="cnt-iv" id="cntr" style="color:#00ff9f">--</div><div class="cnt-il">件/小时</div></div><div><div class="cnt-iv" id="cntp" style="color:#ffb300">--</div><div class="cnt-il">完成率%</div></div></div>
+</div></div>
+</div></div>
+    <script>
+var R=function(a,b){return Math.random()*(b-a)+a};
+var C=function(v,a,b){return Math.max(a,Math.min(b,v))};
+setInterval(function(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('zh-CN',{hour12:false})},1000);
+var tH=[],hH=[],tV=24,hV=55;
+function drawGauge(id,val,max,c1,c2){
+var cv=document.getElementById(id),ctx=cv.getContext('2d'),w=cv.width,h=cv.height;
+ctx.clearRect(0,0,w,h);
+var cx=w/2,cy=h-5,r=h-10,pct=C(val/max,0,1);
+ctx.beginPath();ctx.arc(cx,cy,r,Math.PI,0);ctx.strokeStyle='#071524';ctx.lineWidth=10;ctx.stroke();
+var grad=ctx.createLinearGradient(cx-r,0,cx+r,0);
+grad.addColorStop(0,c1);grad.addColorStop(1,c2);
+ctx.beginPath();ctx.arc(cx,cy,r,Math.PI,Math.PI+(Math.PI*pct));ctx.strokeStyle=grad;ctx.lineWidth=10;ctx.stroke();
+var ang=Math.PI+Math.PI*pct,nx=cx+Math.cos(ang)*(r-5),ny=cy+Math.sin(ang)*(r-5);
+ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(nx,ny);ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+ctx.beginPath();ctx.arc(cx,cy,4,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();}
+var spk=document.getElementById('spk'),sc=spk.getContext('2d');
+function drawSpk(){
+var w=spk.width,h=spk.height;sc.clearRect(0,0,w,h);
+function dl(d,col,mn,mx){if(d.length<2)return;sc.beginPath();d.forEach(function(v,i){var x=i/(d.length-1)*w,y=h-(v-mn)/(mx-mn)*h;i?sc.lineTo(x,y):sc.moveTo(x,y)});sc.strokeStyle=col;sc.lineWidth=1.5;sc.stroke()}
+dl(tH,'#ffb300',15,45);dl(hH,'#00c8ff',30,100);}
+function tickTH(){
+tV=C(tV+R(-0.3,0.3),18,40);hV=C(hV+R(-0.5,0.5),30,95);
+tH.push(tV);if(tH.length>60)tH.shift();hH.push(hV);if(hH.length>60)hH.shift();
+drawGauge('tg',tV,50,'#00ff9f','#ff3d3d');
+drawGauge('hg',hV,100,'#00c8ff','#ff3d3d');
+document.getElementById('tv').innerHTML=tV.toFixed(1)+'<span>°C</span>';
+document.getElementById('hv').innerHTML=hV.toFixed(1)+'<span>%</span>';
+document.getElementById('ov1').textContent=tV.toFixed(1)+'°C';
+document.getElementById('tht').textContent=new Date().toLocaleTimeString('zh-CN');
+var al=tV>35||hV>85;
+var b=document.getElementById('thb');b.textContent=al?'ALARM':'NORMAL';b.className=al?'pb alarm':'pb';
+document.getElementById('ov1s').textContent=al?'超限报警':'正常';
+document.getElementById('ov1s').className='ov-st '+(al?'danger':'ok');
+drawSpk();}
+for(var i=0;i<40;i++){tV=C(tV+R(-0.2,0.2),18,40);hV=C(hV+R(-0.4,0.4),30,95);tH.push(tV);hH.push(hV)}
+tickTH();setInterval(tickTH,1200);
+var irZ=[{n:'A区-入口',id:'z0'},{n:'A区-通道',id:'z1'},{n:'B区-库位',id:'z2'},{n:'B区-出口',id:'z3'},{n:'C区-生产',id:'z4'},{n:'C区-备用',id:'z5'}];
+var irN=0,irG=document.getElementById('irg'),irL=document.getElementById('irl');
+irZ.forEach(function(z){irG.innerHTML+='<div class="irz" id="'+z.id+'"><div class="irz-n">'+z.n+'</div><div class="irz-s">🟢</div><div class="irz-v" id="'+z.id+'v">无触发</div></div>'});
+function logIR(m,n){var d=document.createElement('div');d.className='ir-entry'+(n?' new':'');d.textContent=new Date().toLocaleTimeString('zh-CN')+' '+m;irL.insertBefore(d,irL.firstChild);if(irL.children.length>8)irL.removeChild(irL.lastChild)}
+function tickIR(){irZ.forEach(function(z){var el=document.getElementById(z.id);if(!el.classList.contains('on')&&Math.random()<0.12){el.classList.add('on');el.querySelector('.irz-s').textContent='🔴';document.getElementById(z.id+'v').textContent='触发!';irN++;logIR(z.n+' 检测到移动',true);document.getElementById('ov2').textContent=irN;document.getElementById('ov2s').textContent='有触发';document.getElementById('ov2s').className='ov-st warn';document.getElementById('irb').textContent='TRIGGERED';document.getElementById('irb').className='pb alarm';spontaneous=setTimeout(function(){el.classList.remove('on');el.querySelector('.irz-s').textContent='🟢';document.getElementById(z.id+'v').textContent='无触发'},R(1500,4000))}})}
+setInterval(tickIR,1500);logIR('系统自检完成 6区域在线');
+var GS=[{n:'CO',u:'ppm',max:50,safe:25,c:'#ffb300',v:8},{n:'H₂S',u:'ppm',max:20,safe:10,c:'#ff6b35',v:2},{n:'CH₄',u:'%LEL',max:100,safe:20,c:'#00c8ff',v:5},{n:'O₂',u:'%',max:25,safe:21,c:'#00ff9f',v:20.9,inv:true}];
+var gsl=document.getElementById('gsl');
+GS.forEach(function(g,i){gsl.innerHTML+='<div class="gas-row"><div class="gas-n">'+g.n+' <span style="font-size:9px;color:#4a7090">('+g.u+')</span></div><div class="gas-bg"><div class="gas-fill" id="gf'+i+'" style="background:'+g.c+'"></div></div><div class="gas-v" id="gv'+i+'" style="color:'+g.c+'">--</div></div>'});
+function tickGS(){var al=false;GS.forEach(function(g,i){g.v=C(g.v+R(-0.3,0.4),0,g.max);document.getElementById('gf'+i).style.width=C(g.v/g.max*100,0,100)+'%';document.getElementById('gv'+i).textContent=g.v.toFixed(1);if(g.inv?g.v<19:g.v>g.safe)al=true});
+var ga=document.getElementById('gsa'),gb=document.getElementById('gsb');
+if(al){ga.className='gas-alert alarm';ga.textContent='⚠ 气体浓度超限！立即疏散！';gb.textContent='ALARM';gb.className='pb alarm';document.getElementById('ov3').textContent='报警';document.getElementById('ov3s').textContent='浓度超限';document.getElementById('ov3s').className='ov-st danger'}
+else{ga.className='gas-alert safe';ga.textContent='✓ 所有气体浓度安全';gb.textContent='SAFE';gb.className='pb';document.getElementById('ov3').textContent='安全';document.getElementById('ov3s').textContent='浓度正常';document.getElementById('ov3s').className='ov-st ok'}}
+setInterval(tickGS,1500);tickGS();
+      var ac=document.getElementById('agvc'),ax=ac.getContext('2d');
+ac.width=ac.offsetWidth||500;ac.height=200;
+var AW=ac.width,AH=ac.height,aTrips=0;
+var agv={x:50,y:AH/2,vx:1.5,w:26,h:16,angle:0,sensor:75};
+var wps=[{x:50,y:AH/2},{x:AW*.25,y:AH*.25},{x:AW*.5,y:AH*.7},{x:AW*.75,y:AH*.3},{x:AW-50,y:AH/2},{x:AW*.75,y:AH*.7},{x:AW*.5,y:AH*.25},{x:AW*.25,y:AH*.7}];
+var wpi=1,obs=[];
+for(var oi=0;oi<5;oi++)obs.push({x:R(80,AW-80),y:R(25,AH-25),w:R(18,36),h:R(12,28),vx:R(-0.3,0.3),vy:R(-0.2,0.2)});
+function dObs(px,py){var m=9999;obs.forEach(function(o){var d=Math.sqrt((px-o.x)*(px-o.x)+(py-o.y)*(py-o.y));if(d<m)m=d});return m}
+function drawAGV(){
+ax.clearRect(0,0,AW,AH);
+ax.strokeStyle='rgba(0,200,255,0.05)';ax.lineWidth=1;
+for(var x=0;x<AW;x+=40){ax.beginPath();ax.moveTo(x,0);ax.lineTo(x,AH);ax.stroke()}
+for(var y=0;y<AH;y+=40){ax.beginPath();ax.moveTo(0,y);ax.lineTo(AW,y);ax.stroke()}
+ax.beginPath();ax.setLineDash([4,8]);wps.forEach(function(w,i){i?ax.lineTo(w.x,w.y):ax.moveTo(w.x,w.y)});ax.closePath();ax.strokeStyle='rgba(0,200,255,0.12)';ax.lineWidth=1;ax.stroke();ax.setLineDash([]);
+wps.forEach(function(w,i){ax.beginPath();ax.arc(w.x,w.y,4,0,Math.PI*2);ax.fillStyle=i===wpi?'rgba(0,200,255,.8)':'rgba(0,200,255,.2)';ax.fill()});
+obs.forEach(function(o){o.x+=o.vx;o.y+=o.vy;if(o.x<15||o.x>AW-15)o.vx*=-1;if(o.y<15||o.y>AH-15)o.vy*=-1;ax.fillStyle='rgba(255,107,53,.2)';ax.strokeStyle='rgba(255,107,53,.6)';ax.lineWidth=1.5;ax.beginPath();ax.rect(o.x-o.w/2,o.y-o.h/2,o.w,o.h);ax.fill();ax.stroke();ax.fillStyle='rgba(255,107,53,.8)';ax.font='8px monospace';ax.fillText('OBS',o.x-9,o.y+3)});
+var tp=wps[wpi],dx=tp.x-agv.x,dy=tp.y-agv.y,dist=Math.sqrt(dx*dx+dy*dy);
+if(dist<12){wpi=(wpi+1)%wps.length;if(wpi===0){aTrips++;document.getElementById('agvt').textContent=aTrips}}
+var nd=dObs(agv.x,agv.y);document.getElementById('agvd').textContent=nd.toFixed(0);
+var av=nd<agv.sensor;
+if(av){agv.x+=(-dy/dist)*1.5;agv.y+=(dx/dist)*1.5;document.getElementById('agvb').textContent='AVOIDING';document.getElementById('agvb').className='pb warn';document.getElementById('ov4').textContent='避障';document.getElementById('ov4s').textContent='正在绕行';document.getElementById('ov4s').className='ov-st warn'}
+else{agv.x+=(dx/dist)*agv.vx;agv.y+=(dy/dist)*agv.vx;document.getElementById('agvb').textContent='RUNNING';document.getElementById('agvb').className='pb';document.getElementById('ov4').textContent='运行';document.getElementById('ov4s').textContent='路径清晰';document.getElementById('ov4s').className='ov-st ok'}
+agv.x=C(agv.x,15,AW-15);agv.y=C(agv.y,15,AH-15);agv.angle=Math.atan2(dy,dx);
+ax.beginPath();ax.arc(agv.x,agv.y,agv.sensor,agv.angle-.5,agv.angle+.5);ax.strokeStyle=av?'rgba(255,179,0,.4)':'rgba(0,200,255,.2)';ax.lineWidth=1;ax.stroke();
+ax.save();ax.translate(agv.x,agv.y);ax.rotate(agv.angle);
+ax.fillStyle=av?'rgba(255,179,0,.2)':'rgba(0,200,255,.15)';ax.strokeStyle=av?'#ffb300':'#00c8ff';ax.lineWidth=2;ax.beginPath();ax.rect(-agv.w/2,-agv.h/2,agv.w,agv.h);ax.fill();ax.stroke();
+ax.fillStyle=av?'#ffb300':'#00c8ff';ax.beginPath();ax.moveTo(agv.w/2,0);ax.lineTo(agv.w/2-7,-4);ax.lineTo(agv.w/2-7,4);ax.closePath();ax.fill();
+ax.fillStyle='#fff';ax.font='bold 7px monospace';ax.textAlign='center';ax.fillText('AGV',0,2);ax.restore();
+requestAnimationFrame(drawAGV);}
+drawAGV();
+var total=0,hc=[0,0,0,0],TGT=200;
+function buildBars(){var cb=document.getElementById('cntb'),ch=document.getElementById('cnth');cb.innerHTML='';ch.innerHTML='';var now=new Date(),mx=Math.max.apply(null,hc.concat([1]));for(var i=3;i>=0;i--){var h=new Date(now-i*3600000),pct=hc[3-i]/mx*100;cb.innerHTML+='<div class="cnt-col"><div class="cnt-bg"><div class="cnt-fill" id="cb'+i+'" style="height:'+pct+'%"></div></div></div>';ch.innerHTML+='<span>'+h.getHours()+':00</span>'}}
+buildBars();
+function refCnt(){document.getElementById('cntn').textContent=total;document.getElementById('ov5').textContent=total;document.getElementById('cntr').textContent=Math.round(total/Math.max(new Date().getHours()||1,1));document.getElementById('cntp').textContent=Math.min(Math.round(total/TGT*100),100);var mx=Math.max.apply(null,hc.concat([1]));for(var i=0;i<4;i++){var b=document.getElementById('cb'+i);if(b)b.style.height=(hc[i]/mx*100)+'%'}}
+function addC(){var n=Math.floor(R(1,4));total+=n;hc[3]+=n;refCnt()}
+function resetC(){if(confirm('确认重置？')){total=0;hc=[0,0,0,0];buildBars();refCnt()}}
+setInterval(function(){if(Math.random()<0.4)addC()},2000);
+refCnt();
+</script>
+</body>
+</html>
